@@ -1,6 +1,23 @@
 ;(function () {
 
 /**
+ * Override some potentially dangerous helpers so they are no-ops.
+ * If needed, restart shell with --norc option.
+ */
+var no = function() {
+    print("Not on my watch. Restart shell with --norc option if you want to do this.");
+};
+
+// Prevent dropping databases
+db.dropDatabase = DB.prototype.dropDatabase = no;
+
+// Prevent dropping collections
+DBCollection.prototype.drop = no;
+
+// Prevent dropping indexes
+DBCollection.prototype.dropIndex = no;
+
+/**
  * Make all queries pretty print by default.
  */
 
@@ -27,7 +44,7 @@ prompt = function () {
   if (!res || res.errmsg) {
     // not in a replica set
     var status = db.serverStatus();
-    return status.process + "|" + status.host + "|" + db + "> ";
+    return status.process + "|" + status.host + "|" + db + "|" + new Date() + "> ";
   }
 
   return replsetPrompt();
