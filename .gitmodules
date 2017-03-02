@@ -1,0 +1,3 @@
+[submodule "psqlrc-files"]
+	path = psqlrc-files
+	url = https://github.com/baburdick/psqlrc-files.git
